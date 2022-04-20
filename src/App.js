@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import SignInSingUp from "./pages/SignInSingUp";
+import { ToastContainer } from "react-toastify"
 
 
 export default function App() {
@@ -14,6 +15,17 @@ export default function App() {
       ) : (
         <SignInSingUp />
       )}
+      <ToastContainer 
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnVisibilityChange
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 }

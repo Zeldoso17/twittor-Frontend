@@ -4,6 +4,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faSearch, faUsers, faComment} from "@fortawesome/free-solid-svg-icons"
 import ModalBasico from "../../components/Modal/ModalBasico"
 import SignUpForm from '../../components/SignUpForm'
+import SignInForm from '../../components/SignInForm'
 import LogoTwittor from "../../assets/png/logo.png"
 import LogoBlancoTwittor from "../../assets/png/logo-white.png"
 
@@ -75,7 +76,7 @@ function ComponenteDerecho(props) {
                 </Button>
                 <Button 
                     variant="outline-primary"
-                    onClick={() => abrirModal(<h2>Formulario de Login</h2>)}
+                    onClick={() => abrirModal(<SignInForm setShowModal={setShowModal} />)}
                 >
                     Iniciar Sesión
                 </Button>

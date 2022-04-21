@@ -10,7 +10,8 @@ import LogoBlancoTwittor from "../../assets/png/logo-white.png"
 
 import "./SignInSingUp.scss"
 
-export default function SignInSingUp() {
+export default function SignInSingUp(props) {
+    const { setRefreshCheckLogin } = props;
     const [showModal, setShowModal] = useState(false)
     const [contenidoModal, setContenidoModal] = useState(null)
 
@@ -27,6 +28,7 @@ export default function SignInSingUp() {
                 <ComponenteDerecho 
                     abrirModal={abrirModal}
                     setShowModal={setShowModal}
+                    setRefreshCheckLogin={setRefreshCheckLogin}
                 />
             </Row>
         </Container>
@@ -60,7 +62,7 @@ function ComponenteIzquierdo() {
 }
 
 function ComponenteDerecho(props) {
-    const {abrirModal, setShowModal} = props;
+    const {abrirModal, setShowModal, setRefreshCheckLogin} = props;
 
     return (
         <Col className="signin-signup__derecho" xs={6}>
@@ -76,7 +78,7 @@ function ComponenteDerecho(props) {
                 </Button>
                 <Button 
                     variant="outline-primary"
-                    onClick={() => abrirModal(<SignInForm setShowModal={setShowModal} />)}
+                    onClick={() => abrirModal(<SignInForm setRefreshCheckLogin={setRefreshCheckLogin} />)}
                 >
                     Iniciar Sesión
                 </Button>

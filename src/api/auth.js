@@ -1,6 +1,7 @@
 import { API_HOST, TOKEN } from '../utils/constants'
+import jwtDecode from 'jwt-decode'
 
-export function signUpApi(user){
+export function signUpApi(user){ // Función que hace el llamado a la API para registrar usuario
     const url = `${API_HOST}/registro`;
     const userTemp = {
         ...user,
@@ -30,7 +31,7 @@ export function signUpApi(user){
     
 }
 
-export function signInApi(user){
+export function signInApi(user){ // Función que hace el llamado a la API para loguear usuario
     const url = `${API_HOST}/login`;
 
     const data = {
@@ -61,6 +62,33 @@ export function signInApi(user){
 
 }
 
-export function setTokenApi(token){
+export function setTokenApi(token){ // Guarda el token en el localStorage
     localStorage.setItem(TOKEN, token);
+}
+
+export function getTokenApi(){ // Devuelve el token del localStorage
+    return localStorage.getItem(TOKEN);
+}
+
+export function logoutApi(){ // Elimina el token del localStorage
+    localStorage.removeItem(TOKEN);
+}
+
+export function isUserLoggedApi(){ // Devuelve true si el usuario esta logueado
+    const token = getTokenApi();
+    if (!token) {
+        return null;
+    }
+    if (isTokenExpired(token)) { // Verifica si el token ha expirado
+        logoutApi(); // Si el token ha expirado, elimina el token del localStorage
+    }
+    return jwtDecode(token); // Devuelve el token decodificado
+}
+
+function isTokenExpired(token){ // Devuelve true si el token ha expirado
+    const { exp } = jwtDecode(token); // Obtiene la fecha de expiración del token
+    const expire = exp * 1000; // Se convierte el tiempo de expiración a milisegundos
+    const timeout = expire - Date.now(); // Calcula el tiempo que falta para que expire el token
+
+    return timeout < 0; // Devuelve true si el token ha expirado
 }

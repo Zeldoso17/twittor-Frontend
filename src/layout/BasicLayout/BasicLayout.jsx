@@ -6,7 +6,7 @@ import "./BasicLayout.scss";
 
 export default function BasicLayout(props) {
     const { className, setRefreshCheckLogin, children } = props;
-    console.log(props);
+
   return (
     <Container className={`basic-layout ${className}`}>
         <Row>

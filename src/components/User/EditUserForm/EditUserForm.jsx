@@ -1,12 +1,12 @@
 import React, { useState, useCallback } from 'react'
-import { Form, Button, Row, Col } from 'react-bootstrap'
+import { Form, Button, Row, Col, Spinner } from 'react-bootstrap'
 import DatePicker from 'react-datepicker'
 import es from 'date-fns/locale/es'
 import { useDropzone } from 'react-dropzone'
 import { toast } from 'react-toastify'
 import { API_HOST } from '../../../utils/constants'
 import { Camera } from '../../../utils/Icons'
-import { uploadBannerApi } from '../../../api/user'
+import { uploadBannerApi, uploadAvatarApi, updateInfoApi } from '../../../api/user'
 
 import "./EditUserForm.scss"
 
@@ -21,6 +21,8 @@ export default function EditUserForm(props) {
     const [avatarURL, setAvatarURL] = useState(
         user?.avatar ? `${API_HOST}/obtenerAvatar?id=${user.id}` : null
     );
+
+    const [loading, setLoading] = useState(false);
 
     const [bannerFile, setBannerFile] = useState(null);
     const [avatarFile, setAvatarFile] = useState(null)
@@ -63,13 +65,13 @@ export default function EditUserForm(props) {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const onSubmit = e => {
+    const onSubmit = async e => {
         e.preventDefault();
-        if(bannerFile) {
-            uploadBannerApi(bannerFile).catch(() => {
-                toast.error("Error al subir el banner");
-            });
-        }
+        setLoading(true);
+        await subirBanner(bannerFile);
+        await subirAvatar(avatarFile);
+        await actualizarInfoUsuario(formData, setShowModal, setLoading);
+        
     };
 
 
@@ -148,7 +150,9 @@ export default function EditUserForm(props) {
                     />
                 </Form.Group>
 
-                <Button className="btn-submit" variant="primary" type="submit">Actualizar</Button>
+                <Button className="btn-submit" variant="primary" type="submit">
+                    {loading && <Spinner animation="border" size="sm" />} Actualizar
+                </Button>
             </Form>
         </div>
     )
@@ -163,4 +167,34 @@ function initialFormData(user) {
         sitioWeb: user.sitioWeb || "",
         fechaNacimiento: user.fechaNacimiento || ""
     };
+}
+
+async function subirBanner(bannerFile) {
+    if(bannerFile) {
+        await uploadBannerApi(bannerFile).catch(() => {
+            toast.error("Error al subir el nuevo banner");
+        });
+    }
+}
+
+async function subirAvatar(avatarFile) {
+    if(avatarFile) {
+        await uploadAvatarApi(avatarFile).catch(() => {
+            toast.error("Error al subir el nuevo avatar");
+        });
+    }
+}
+
+async function actualizarInfoUsuario(user, setShowModal, setLoading) {
+    await updateInfoApi(user).then(() => {
+        toast.success("Información actualizada");
+        setShowModal(false);
+    })
+    .catch(() => {
+        toast.error("Error al actualizar la información");
+    })
+    .finally(() => {
+        setLoading(false);
+        window.location.reload();
+    })
 }

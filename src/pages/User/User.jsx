@@ -5,6 +5,7 @@ import{ toast } from 'react-toastify';
 import useAuth from "../../hooks/userAuth";
 import BasicLayout from '../../layout/BasicLayout'
 import BannerAvatar from '../../components/User/BannerAvatar';
+import InfoUser from '../../components/User/InfoUser';
 import { getUserApi } from '../../api/user'
 
 import "./User.scss";
@@ -31,7 +32,7 @@ function User(props) {
         <h2>{user ? `${user.nombre} ${user.apellidos}` : 'Este usuario no existe'}</h2>
       </div>
       <BannerAvatar user={user} currentUser={currentUser}/>
-      <div>Info Usuario</div>
+      <InfoUser user={user}></InfoUser>
       <div className='user__tweets'>Lista de Tweets</div>
     </BasicLayout>
   )

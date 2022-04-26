@@ -24,3 +24,29 @@ export function getUserApi(id){
         return err
     })
 }
+
+export function uploadBannerApi(file){
+    const url = `${API_HOST}/subirBanner`;
+
+    const formData = new FormData();
+    formData.append('banner', file);
+
+    const params = {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${getTokenApi()}`
+        },
+        body: formData
+    }
+
+    return fetch(url, params).then(response => {
+        return response.json();
+    })
+    .then(result => {
+        return result;
+    })
+    .catch(err => {
+        return err;
+    })
+
+}

@@ -28,3 +28,22 @@ export function createTweetApi(message){
         return err;
     });
 }
+
+export function getUserTweetsApi(userId, page){
+    const url = `${API_HOST}/leerTweets?id=${userId}&pagina=${page}`;
+
+    const params = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${getTokenApi()}`
+        }
+    }
+
+    return fetch(url, params)
+    .then(response => {
+        return response.json();
+    })
+    .catch(err => {
+        return err;
+    })
+}

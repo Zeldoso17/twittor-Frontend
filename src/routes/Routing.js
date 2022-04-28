@@ -1,5 +1,6 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
+import { } from 'react-router';
 import { map } from 'lodash';
 import configRouting from './configRouting';
 

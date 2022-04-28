@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Spinner, ButtonGroup, Button } from 'react-bootstrap'
-import { useSearchParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import queryString from 'query-string'
 import { isEmpty } from 'lodash'
 import BasicLayout from '../../layout/BasicLayout'
@@ -18,13 +18,12 @@ function Users(props) {
     const [users, setUsers] = useState(null);
     const params = useUsersQuery(router);
     const [typeUser, setTypeUser] = useState(params.type || "follow");
-    const [searchParams, setSearchParams] = useSearchParams();
+    const navigate = useNavigate();
 
 
     console.log(props);
 
     useEffect(() => {
-        console.log(searchParams);
         getFollowsApi(queryString.stringify(params))
             .then(response => {
                 if (isEmpty(response)) {
@@ -47,16 +46,8 @@ function Users(props) {
         } else {
             setTypeUser("follow");
         }
-        window.history.pushState(null, queryString.stringify(`?page=${1}&type=${type}&search=${""}`));
-        /*setSearchParams({
-            search: queryString.stringify(`?page=${1}&type=${type}&search=${""}`)
-        });*/
-        /*history.push({
-            search: queryString.stringify({type: type, page: 1, search: ""})
-        })*/
-        /*HashHistory.push({
-            search: queryString.stringify({type: type, page: 1, search: ""})
-        });*/
+        navigate(`/users?page=${1}&type=${type}&search=${""}`);
+       
     }
 
     return (
